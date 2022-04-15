@@ -41,23 +41,25 @@ const Login = (props) => {
     value: '',
     isValid: null,
   });
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log('check form');
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
-  //   return () => {
-  //     clearTimeout(identifier);
-  //     console.log('clean up');
-  //   };
-  // }, [enteredEmail, enteredPassword]);
 
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
     value: '',
     isValid: null,
   });
+
+  const { isValid: emailIsValid } = emailState; //alias distruct 별칭 할당
+  const { isValid: passwordIsValid } = passwordState; //alias distruct 별칭 할당
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('check form');
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500);
+    return () => {
+      clearTimeout(identifier);
+      console.log('clean up');
+    };
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dipatchEmail({ type: 'USER_INPUT', val: event.target.value });
